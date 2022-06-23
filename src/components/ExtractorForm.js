@@ -1,7 +1,6 @@
 
 import React from "react";
-const XLSX = require('xlsx'); 
-
+ 
 
 function ExtractorForm(props) {
   const [spareParts, setSpareParts] = React.useState(["Filtro Aceite", "Filtro Aire", "Filtro Polen", "Filtro Bencina", "Filtro Petroleo", "Bujías"]);

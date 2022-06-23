@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+ 
+import './App.css';    
+import ExtractorForm from './components/ExtractorForm.js';
+ 
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="row">
+        <div className="col s12">
+          <div className="card">
+            <div className="card-content">
+              <span className="card-title">ML Data Extractor</span>
+              <p>Use esta herramienta para generar un archivo csv con la estimacion de precios de auto partes.</p>  
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      <ExtractorForm></ExtractorForm>
     </div>
   );
 }

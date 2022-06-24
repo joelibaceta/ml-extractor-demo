@@ -112,7 +112,7 @@ function ExtractorForm(props) {
                   <div className="row">
                     <div className="col s9">
                       <p>{newVehicle}</p>
-                      <input id="new_spare_part" type="text" onChange={(e) => {handleNewVehicleChange(e)}} className="validate"></input>
+                      <input id="new_spare_part" type="text" onChange={(e) => {handleNewVehicleChange(e)}} value={newVehicle} className="validate"></input>
                     </div>
                     <div className="col s3">  
                       <a className="waves-effect waves-light btn" onclick={addVehicle}>Agregar</a>

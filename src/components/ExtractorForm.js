@@ -6,15 +6,26 @@ function ExtractorForm(props) {
   const [spareParts, setSpareParts] = React.useState(["Filtro Aceite", "Filtro Aire", "Filtro Polen", "Filtro Bencina", "Filtro Petroleo", "Bujías"]);
   const [vehicles, setVehicles] = React.useState([]);
   const [newSparePart, setNewSparePart] = React.useState("");
+  const [newVehicle, setNewVehicle] = React.useState("");
 
-  const handleChange = (event) => {
+  const handleNewSparePartChange = (event) => {
     setNewSparePart(event.target.value);
+  }
+
+  const handleNewVehicleChange = (event) => {
+    setNewVehicle(event.target.value)
   }
 
   const addSparePart = () => {
     setSpareParts([...spareParts, newSparePart]);
     setNewSparePart("");
   }
+
+  const addVehicle = () => {
+    setVehicles([...vehicles, newVehicle]);
+    setNewVehicle("");
+  }
+  
 
   const loadSparePartsFromFile = (e) => { 
     const file = e.target.files[0];
@@ -67,7 +78,7 @@ function ExtractorForm(props) {
                   <div className="row">
                     <div className="col s9">
                       <p>{newSparePart}</p>
-                      <input type="text" onChange={(e) => {handleChange(e)}} value={newSparePart} className="validate"></input>
+                      <input type="text" onChange={(e) => {handleNewSparePartChange(e)}} value={newSparePart} className="validate"></input>
                     </div>
                     <div className="col s3">  
                       <a className="waves-effect waves-light btn" onClick={addSparePart}>Agregar</a>
@@ -94,16 +105,16 @@ function ExtractorForm(props) {
                         <input type="file" onChange={(e) => {loadVehiclesFromFile(e)}}></input>
                       </div>
                       <div className="file-path-wrapper">
-                        <input className="file-path validate" type="text"></input>
+                        <input className="file-path validate"  type="text"></input>
                       </div>
                     </div>
                   </div>
                   <div className="row">
                     <div className="col s9">
-                      <input id="new_spare_part" type="text" className="validate"></input>
+                      <input id="new_spare_part" type="text" onChange={(e) => {handleNewVehicleChange(e)}} className="validate"></input>
                     </div>
                     <div className="col s3">  
-                      {/* <a className="waves-effect waves-light btn" onclick="add_spare_part()">Agregar</a> */}
+                      <a className="waves-effect waves-light btn" onclick={addVehicle}>Agregar</a>
                     </div>
                     
                   </div>

@@ -111,6 +111,7 @@ function ExtractorForm(props) {
                   </div>
                   <div className="row">
                     <div className="col s9">
+                      <p>{newVehicle}</p>
                       <input id="new_spare_part" type="text" onChange={(e) => {handleNewVehicleChange(e)}} className="validate"></input>
                     </div>
                     <div className="col s3">  

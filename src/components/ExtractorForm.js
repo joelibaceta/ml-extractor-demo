@@ -25,6 +25,18 @@ function ExtractorForm(props) {
     setVehicles([...vehicles, newVehicle]);
     setNewVehicle("");
   }
+
+  const removeSparePartByIndex = (index) => {
+    let currentSpareParts = [...spareParts];
+    currentSpareParts.splice(index, 1)
+    setSpareParts(currentSpareParts);
+  }
+
+  const removeVehicleByIndex = (index) => {
+    let currentVehicles = [...vehicles];
+    currentVehicles.splice(index, 1)
+    setVehicles(currentVehicles);
+  }
   
 
   const loadSparePartsFromFile = (e) => { 
@@ -86,8 +98,13 @@ function ExtractorForm(props) {
                   </div>
                   
                   <ul className="collection">
-                    {spareParts.map((item) => {
-                      return <li className="collection-item">{item}</li>
+                    {spareParts.map((item, index) => {
+                      return <li className="collection-item">{item} 
+                          <a href="#!" 
+                            className="secondary-content" 
+                            onClick={() => {removeSparePartByIndex(index)}}>
+                              <i className="material-icons">remove</i></a>
+                        </li>
                     })}
                   </ul>
                   
@@ -115,7 +132,7 @@ function ExtractorForm(props) {
                       <input id="new_spare_part" type="text" onChange={(e) => {handleNewVehicleChange(e)}} value={newVehicle} className="validate"></input>
                     </div>
                     <div className="col s3">  
-                      <a className="waves-effect waves-light btn" onclick={addVehicle}>Agregar</a>
+                      <a className="waves-effect waves-light btn" onClick={addVehicle}>Agregar</a>
                     </div>
                     
                   </div>
@@ -136,7 +153,7 @@ function ExtractorForm(props) {
         <div className="card">
           <div className="card-content">
             <div className="row">
-              <div className="col-12 center">
+              <div className="col-12 ">
                  {/* <a className="waves-effect waves-light btn btn-info btn-large blue darken-1" onclick="generate_csv()">Procesar</a> */}
               </div>
             </div>

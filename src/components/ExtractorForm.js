@@ -9,6 +9,7 @@ function ExtractorForm(props) {
   const [newVehicle, setNewVehicle] = React.useState("");
   const [processedItems, setProcessedItems] = React.useState([]);
   const [notProcessedItems, setNotProcessedItems] = React.useState([]);
+  const [progressCounter, setProgressCounter] = React.useState("0%");
 
   const handleNewSparePartChange = (event) => {
     setNewSparePart(event.target.value);
@@ -72,6 +73,12 @@ function ExtractorForm(props) {
     let spare_parts_col = [...spareParts];
     let vehicles_col = [...vehicles];
 
+    setProcessedItems([])
+    setNotProcessedItems([])
+
+    var counter = 0;
+    let total = vehicles_col.length * spareParts.length;
+
     for (let vehicle_index in vehicles_col) { 
       for (let spare_part_index in spare_parts_col) {
         console.log(vehicles_col[vehicle_index] + " " + spare_parts_col[spare_part_index]);
@@ -80,6 +87,13 @@ function ExtractorForm(props) {
           
           console.log("data extraction");
           console.log(data);
+
+          counter += 1;
+
+          let percentage = counter / total * 100
+
+          setProgressCounter(percentage + "%")
+
 
           if (data.processed) {
             setProcessedItems(processedItems => [...processedItems, data]);
@@ -204,6 +218,10 @@ function ExtractorForm(props) {
             <div className="row">
               <div className="col-12 center">
                  <a className="waves-effect waves-light btn btn-info btn-large blue darken-1" onClick={processAllData}>Procesar</a> 
+                <br></br><br></br>
+                 <div class="progress">
+                    <div class="determinate" style={{width: progressCounter}}></div>
+                </div>
               </div>
             </div>
           </div>

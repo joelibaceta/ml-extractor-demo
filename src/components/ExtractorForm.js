@@ -1,12 +1,14 @@
 
-import React from "react";
+import React, { useEffect } from "react";
  
 
 function ExtractorForm(props) {
   const [spareParts, setSpareParts] = React.useState(["Filtro Aceite", "Filtro Aire", "Filtro Polen", "Filtro Bencina", "Filtro Petroleo", "Bujías"]);
-  const [vehicles, setVehicles] = React.useState([]);
+  const [vehicles, setVehicles] = React.useState(["Audi A5"]);
   const [newSparePart, setNewSparePart] = React.useState("");
   const [newVehicle, setNewVehicle] = React.useState("");
+  const [processedItems, setProcessedItems] = React.useState([]);
+  const [notProcessedItems, setNotProcessedItems] = React.useState([]);
 
   const handleNewSparePartChange = (event) => {
     setNewSparePart(event.target.value);
@@ -65,6 +67,49 @@ function ExtractorForm(props) {
     reader.readAsBinaryString(file);
 
   }
+
+  const processAllData = () => {
+    let spare_parts_col = [...spareParts];
+    let vehicles_col = [...vehicles];
+
+    for (let vehicle_index in vehicles_col) { 
+      for (let spare_part_index in spare_parts_col) {
+        console.log(vehicles_col[vehicle_index] + " " + spare_parts_col[spare_part_index]);
+
+        processDataExtraction(spare_parts_col[spare_part_index], vehicles_col[vehicle_index], (data) => {
+          console.log(data);
+
+          if (data.processed) {
+            setProcessedItems([...processedItems, data.item]);
+          } else {
+            setNotProcessedItems([...notProcessedItems, data.item]);
+          }
+        });
+
+      }
+    }
+  }
+
+  const processDataExtraction = (spare_part, vehicle, callback) => {
+    /* Extract data from ML API using a middleware */
+    let backend_url = "https://ml-explorer.vercel.app/api/handler.py";
+    fetch(backend_url, {
+      method: 'POST',
+      body: JSON.stringify({
+        spare_part: spare_part,
+        vehicle: vehicle
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json)
+    .then((response) => {
+      callback(response)
+    })
+
+  }
+
 
   return(
     <div> 
@@ -153,8 +198,8 @@ function ExtractorForm(props) {
         <div className="card">
           <div className="card-content">
             <div className="row">
-              <div className="col-12 ">
-                 {/* <a className="waves-effect waves-light btn btn-info btn-large blue darken-1" onclick="generate_csv()">Procesar</a> */}
+              <div className="col-12 center">
+                 <a className="waves-effect waves-light btn btn-info btn-large blue darken-1" onClick={processAllData}>Procesar</a> 
               </div>
             </div>
           </div>
@@ -173,7 +218,11 @@ function ExtractorForm(props) {
                   
                   <div className="card-content"> 
                     <span className="card-title">Procesados Correctamente</span>
-                    Procsados
+                    <ul className="collection">
+                      {processedItems.map((item) => {
+                        return <li className="collection-item">{item.mean}</li>
+                      })}
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -182,7 +231,9 @@ function ExtractorForm(props) {
                   
                   <div className="card-content"> 
                     <span className="card-title">Sin resultados encontrados</span>
-                    Procsados
+                      {notProcessedItems.map((item) => {
+                        return <li className="collection-item">{item}</li>
+                      })}
                   </div>
                 </div>
               </div>

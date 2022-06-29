@@ -77,12 +77,13 @@ function ExtractorForm(props) {
         console.log(vehicles_col[vehicle_index] + " " + spare_parts_col[spare_part_index]);
 
         processDataExtraction(spare_parts_col[spare_part_index], vehicles_col[vehicle_index], (data) => {
+          
           console.log(data);
 
           if (data.processed) {
-            setProcessedItems([...processedItems, data.item]);
+            setProcessedItems([...processedItems, data]);
           } else {
-            setNotProcessedItems([...notProcessedItems, data.item]);
+            setNotProcessedItems([...notProcessedItems, data]);
           }
         });
 
@@ -103,8 +104,9 @@ function ExtractorForm(props) {
         'Content-Type': 'application/json'
       }
     })
-    .then(res => res.json)
+    .then(res => res.json())
     .then((response) => {
+      console.log(response);
       callback(response)
     })
 
@@ -220,7 +222,7 @@ function ExtractorForm(props) {
                     <span className="card-title">Procesados Correctamente</span>
                     <ul className="collection">
                       {processedItems.map((item) => {
-                        return <li className="collection-item">{item.mean}</li>
+                        return <li className="collection-item">{item.title} - {item.item.mean}</li>
                       })}
                     </ul>
                   </div>
@@ -232,7 +234,7 @@ function ExtractorForm(props) {
                   <div className="card-content"> 
                     <span className="card-title">Sin resultados encontrados</span>
                       {notProcessedItems.map((item) => {
-                        return <li className="collection-item">{item}</li>
+                        return <li className="collection-item">{item.title}</li>
                       })}
                   </div>
                 </div>

@@ -85,6 +85,7 @@ function ExtractorForm(props) {
           } else {
             setNotProcessedItems([...notProcessedItems, data]);
           }
+          
         });
 
       }
@@ -222,7 +223,7 @@ function ExtractorForm(props) {
                     <span className="card-title">Procesados Correctamente</span>
                     <ul className="collection">
                       {processedItems.map((item) => {
-                        return <li className="collection-item">{item.title} - {item.item.mean}</li>
+                        return <li className="collection-item">{item.title} - {item.item.mean} +/- {item.item.std}</li>
                       })}
                     </ul>
                   </div>

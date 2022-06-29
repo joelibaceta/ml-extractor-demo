@@ -238,6 +238,11 @@ function ExtractorForm(props) {
                       })}
                     </table>
                     
+                    <div className="center">
+                      <a className="waves-effect waves-light btn btn-info btn-large blue darken-1" onClick={processAllData}>Generar CSV</a> 
+                    </div>
+
+                    
                   </div>
                 </div>
               </div>

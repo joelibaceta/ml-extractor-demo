@@ -222,11 +222,22 @@ function ExtractorForm(props) {
                   
                   <div className="card-content"> 
                     <span className="card-title">Procesados Correctamente</span>
-                    <ul className="collection">
+                    <table>
+                      <thead>
+                        <th>Item</th>
+                        <th>Mean Price</th>
+                        <th>Deviation</th>
+                      </thead>
                       {processedItems.map((item) => {
-                        return <li className="collection-item">{item.title} - {item.item.mean} +/- {item.item.std}</li>
+                        return (
+                          <tbody>
+                            <tr className="collection-item">
+                              <td>{item.title}</td><td><b>$ {item.item.mean.toFixed(2)}</b></td><td> +/- $ {item.item.std.toFixed(2)}</td>
+                            </tr>
+                          </tbody>)
                       })}
-                    </ul>
+                    </table>
+                    
                   </div>
                 </div>
               </div>

@@ -78,12 +78,13 @@ function ExtractorForm(props) {
 
         processDataExtraction(spare_parts_col[spare_part_index], vehicles_col[vehicle_index], (data) => {
           
+          console.log("data extraction");
           console.log(data);
 
           if (data.processed) {
-            setProcessedItems([...processedItems, data]);
+            setProcessedItems(processedItems => [...processedItems, data]);
           } else {
-            setNotProcessedItems([...notProcessedItems, data]);
+            setNotProcessedItems(notProcessedItems => [...notProcessedItems, data]);
           }
           
         });

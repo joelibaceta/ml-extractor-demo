@@ -69,6 +69,26 @@ function ExtractorForm(props) {
 
   }
 
+  const generateCSV = () => {
+    fetch("https://ml-explorer.vercel.app/api/buildcsv.py", {
+      method: 'POST',
+      body: JSON.stringify(processedItems),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = "output.csv";
+        document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+        a.click();    
+        a.remove();  //afterwards we remove the element again         
+    });
+  }
+
   const processAllData = () => {
     let spare_parts_col = [...spareParts];
     let vehicles_col = [...vehicles];
@@ -257,7 +277,7 @@ function ExtractorForm(props) {
                     </table>
                     
                     <div className="center">
-                      <a className="waves-effect waves-light btn btn-info btn-large blue darken-1" onClick={processAllData}>Generar CSV</a> 
+                      <a className="waves-effect waves-light btn btn-info btn-large blue darken-1" onClick={generateCSV}>Generar CSV</a> 
                     </div>
 
                     

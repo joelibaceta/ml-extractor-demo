@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import "./process-data-button.css";
 
 const ProcessDataButton = ({ processAllData, progressCounter }) => {
-  const percentage = Number(
-    progressCounter.slice(0, progressCounter.length - 1)
-  ).toFixed(0);
+  const percentage = parseInt(progressCounter.split("%")[0]);
 
   return (
     <div className="process-data__container">

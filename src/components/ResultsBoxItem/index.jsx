@@ -5,8 +5,8 @@ import "./results-box-item.css";
 const ResultsBoxItem = ({ children, title }) => {
   return (
     <section className="results-box-item">
-      <span className="card-title">{title}</span>
-      <p>Procesados</p>
+      <span className="results-box-title">{title}</span>
+      <p className="result-box-processed">Procesados</p>
       {children}
     </section>
   );

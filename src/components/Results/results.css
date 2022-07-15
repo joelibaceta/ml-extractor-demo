@@ -1,0 +1,14 @@
+.results-container {
+}
+
+.results-container__title {
+  font-size: 1rem;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.results-box {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}

@@ -10,6 +10,11 @@ import { HomePage, ResultsPage } from "./pages";
 import "./App.css";
 
 function App() {
+  if (!localStorage.getItem("results")) {
+    localStorage.setItem("results", JSON.stringify([[], []]));
+    localStorage.setItem("percentage", 0);
+  }
+
   return (
     <div className="container">
       <Router>

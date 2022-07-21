@@ -26,10 +26,12 @@ const Results = () => {
         document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
         a.click();
         a.remove(); //afterwards we remove the element again
+      })
+      .catch((error) => {
+        throw new Error(error);
       });
   };
 
-  // console.log(processedItems);
 
   return (
     <div className="results-container">
@@ -75,9 +77,9 @@ const Results = () => {
         <ResultsBoxItem title="Sin resultados encontrados">
           {notProcessedItems.length > 0 && (
             <>
-              <ul>
+              <ul className="not-processed__list">
                 {notProcessedItems.map((item) => (
-                  <li className="collection-item">{item.title}</li>
+                  <li className="not-processed__list-item">{item.title}</li>
                 ))}
               </ul>
 

@@ -9,19 +9,24 @@
 
 .process-data__button {
   background: #3482fb;
-  border-color: transparent;
+  border: 1px solid transparent;
   border-radius: 8px;
   color: #fff;
   font-size: 1rem;
   font-weight: bold;
   padding: 0.8rem 0;
   width: 200px;
+  transition: background 0.3s ease;
 }
 
 @media (max-width: 400px) {
   .process-data__button {
     width: 100%;
   }
+}
+
+.process-data__button:disabled {
+  background: #89b8ff;
 }
 
 .progress-bar-container {

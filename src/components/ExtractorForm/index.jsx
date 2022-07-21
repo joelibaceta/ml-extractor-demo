@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 import InputDataEntry from "../InputDataEntry";
 import ProcessDataButton from "../ProcessDataButton";
@@ -6,6 +7,8 @@ import { useHandleProcessData } from "../../hooks";
 import "./extractor-form.css";
 
 const ExtractorForm = () => {
+  const navigate = useNavigate();
+
   const {
     spareParts,
     newSparePart,
@@ -37,6 +40,7 @@ const ExtractorForm = () => {
         inputTextValue={newSparePart}
         placeholderText="Ej. Filtro de aceite"
       />
+
       <InputDataEntry
         title="Vehículos"
         handleChangeFunction={loadVehiclesFromFile}
@@ -48,15 +52,42 @@ const ExtractorForm = () => {
         inputTextValue={newVehicle}
         placeholderText="Ej. Toyota"
       />
+
       <ProcessDataButton
         processAllData={processAllData}
         progressCounter={progressCounter}
+        disabled={
+          vehicles.length === 0 || spareParts.length === 0 ? true : false
+        }
       />
 
       {showResultsButton && (
-        <Link to="/resultados" className="show-results-button">
+        <button
+          className="show-results-button"
+          onClick={() => {
+            if (
+              +localStorage.getItem("percentage") < 100 ||
+              +progressCounter.split("%")[0] < 100
+            ) {
+              Swal.fire({
+                title: "Procesamiento de Datos",
+                icon: "info",
+                text: "La carga no ha finalizado, ¿desea continuar?",
+                confirmButtonText: "Aceptar",
+                showCancelButton: true,
+                cancelButtonText: "Cancelar",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  navigate("/resultados");
+                }
+              });
+            } else {
+              navigate("/resultados");
+            }
+          }}
+        >
           Ver Resultados
-        </Link>
+        </button>
       )}
     </div>
   );

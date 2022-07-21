@@ -85,3 +85,12 @@
 .deviation {
   text-align: right;
 }
+
+.not-processed__list {
+  list-style: none;
+  padding: 0;
+}
+
+.not-processed__list-item:not(:last-child) {
+  margin-bottom: 8px;
+}

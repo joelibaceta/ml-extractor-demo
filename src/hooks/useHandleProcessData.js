@@ -10,12 +10,18 @@ const useHandleProcessData = () => {
     "Filtro Petroleo",
     "Bujías",
   ]);
+
+  const processed = JSON.parse(localStorage.getItem("results"))[0] || [];
+  const notProcessed = JSON.parse(localStorage.getItem("results"))[1] || [];
+
   const [vehicles, setVehicles] = useState(["Audi A5"]);
   const [newSparePart, setNewSparePart] = useState("");
   const [newVehicle, setNewVehicle] = useState("");
-  const [processedItems, setProcessedItems] = useState([]);
-  const [notProcessedItems, setNotProcessedItems] = useState([]);
-  const [progressCounter, setProgressCounter] = useState("0%");
+  const [processedItems, setProcessedItems] = useState(processed);
+  const [notProcessedItems, setNotProcessedItems] = useState(notProcessed);
+  const [progressCounter, setProgressCounter] = useState(
+    parseInt(localStorage.getItem("percentage")) + "%" || "0%"
+  );
   const [showResultsButton, setShowResultsButton] = useState(false);
 
   const handleNewSparePartChange = (event) => {
@@ -61,7 +67,15 @@ const useHandleProcessData = () => {
     reader.onload = (event) => {
       const contents = event.target.result;
       const loadedSpareParts = contents.split("\n");
-      setSpareParts(loadedSpareParts);
+
+      const filteredLoadedSpareParts = loadedSpareParts.filter(
+        (sparePart) => sparePart !== ""
+      );
+
+      setSpareParts(filteredLoadedSpareParts);
+
+      localStorage.setItem("percentage", 0);
+      setProgressCounter(localStorage.getItem("percentage"));
     };
 
     reader.readAsText(file);
@@ -74,7 +88,14 @@ const useHandleProcessData = () => {
     reader.onload = (event) => {
       const contents = event.target.result;
       const loadedVehicles = contents.split("\n");
-      setVehicles(loadedVehicles);
+
+      const filteredLoadedVehicles = loadedVehicles.filter(
+        (vehicle) => vehicle !== ""
+      );
+
+      setVehicles(filteredLoadedVehicles);
+      localStorage.setItem("percentage", 0);
+      setProgressCounter(localStorage.getItem("percentage"));
     };
 
     reader.readAsBinaryString(file);
@@ -83,8 +104,6 @@ const useHandleProcessData = () => {
   const processAllData = () => {
     const spare_parts_col = [...spareParts];
     const vehicles_col = [...vehicles];
-
-    console.log(spare_parts_col, vehicles_col);
 
     setProcessedItems([]);
     setNotProcessedItems([]);
@@ -101,6 +120,7 @@ const useHandleProcessData = () => {
         processDataExtraction(
           spare_parts_col[spare_part_index],
           vehicles_col[vehicle_index],
+          // eslint-disable-next-line
           (data) => {
             console.log("data extraction");
             console.log(data);
@@ -108,6 +128,8 @@ const useHandleProcessData = () => {
             counter += 1;
 
             let percentage = (counter / total) * 100;
+
+            localStorage.setItem("percentage", percentage);
 
             setProgressCounter(percentage + "%");
 
@@ -127,7 +149,7 @@ const useHandleProcessData = () => {
 
   const processDataExtraction = (spare_part, vehicle, callback) => {
     /* Extract data from ML API using a middleware */
-    const backend_url = "https://ml-explorer.vercel.app/api/handler.py";
+    let backend_url = "https://ml-explorer.vercel.app/api/handler.py";
     fetch(backend_url, {
       method: "POST",
       body: JSON.stringify({
@@ -145,7 +167,10 @@ const useHandleProcessData = () => {
   };
 
   useEffect(() => {
-    if (parseInt(progressCounter.split("%")[0]) === 100) {
+    if (
+      parseInt(progressCounter.split("%")[0]) > 0 ||
+      +localStorage.getItem("percentage") > 0
+    ) {
       localStorage.setItem(
         "results",
         JSON.stringify([processedItems, notProcessedItems])
@@ -154,7 +179,7 @@ const useHandleProcessData = () => {
       setShowResultsButton(true);
 
       setTimeout(() => {
-        window.scrollTo(0, 1000);
+        window.scrollTo(0, document.body.scrollHeight);
       }, 500);
     }
 

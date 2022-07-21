@@ -29,6 +29,9 @@ const InputDataEntry = ({
             id={`${load_type_id}`}
             style={{ display: "none" }}
             onChange={handleChangeFunction}
+            accept={
+              "text/plain, .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+            }
           ></input>
 
           <div className="input-data-entry__input-container">

@@ -1,0 +1,90 @@
+.input-data-entry__title {
+  font-size: 1.2rem;
+}
+
+@media (max-width: 400px) {
+  .input-data-entry__title {
+    margin-left: 1rem;
+  }
+}
+
+.input-data-entry__content {
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 4px 3px 0 #c7c7c7;
+  padding: 1rem;
+}
+
+.input-data-entry__label {
+  cursor: pointer;
+  color: #3482fb;
+}
+
+.input-data-entry__input-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin: 16px 0;
+}
+
+.input-data-entry__input-text {
+  border: 2px solid #000;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.input-data-entry__input-text:focus {
+  border-color: #3482fb;
+  outline: none;
+}
+
+.input-data-entry__input-text::placeholder {
+  color: #bfbfbf;
+}
+
+.input-data-entry__add-item-button {
+  background: #d8e7fb;
+  border: 2px solid #d8e7fb;
+  color: #5395fb;
+  font-weight: 600;
+}
+
+.input-data-entry__input-text,
+.input-data-entry__add-item-button {
+  border-radius: 7px;
+  padding: 0.8rem 1.5rem;
+}
+
+.input-data-entry__input-text,
+.input-data-entry__add-item-button {
+  font-size: 0.9rem;
+}
+
+.input-data-entry__list {
+  list-style: none;
+  padding: 0;
+}
+
+.input-data-entry__list-item {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem 0;
+}
+
+.input-data-entry__list-item:last-child {
+  padding: 0.8rem 0 0 0;
+}
+
+.input-data-entry__list-item > span {
+  color: #818080;
+}
+
+.input-data-entry__remove-item-button {
+  background: none;
+  border: none;
+  color: #3482fb;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0;
+}

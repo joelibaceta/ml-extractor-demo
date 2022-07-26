@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { read, utils } from "xlsx";
 
 const useHandleProcessData = () => {
   const [spareParts, setSpareParts] = useState([
@@ -60,45 +60,120 @@ const useHandleProcessData = () => {
     setVehicles(currentVehicles);
   };
 
-  const loadSparePartsFromFile = (e) => {
+  // const loadSparePartsFromFile = (e) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
+
+  //   if (file.type !== "text/plain") {
+  //     reader.onload = ({ target }) => {
+  //       const bstr = target.result;
+
+  //       const workbook = read(bstr, { type: "binary" });
+  //       /* Get first worksheet */
+  //       const wsname = workbook.SheetNames[0];
+  //       const ws = workbook.Sheets[wsname];
+  //       /* Convert array of arrays */
+  //       const data = utils.sheet_to_csv(ws, { header: 1 });
+
+  //       const parsedData = data
+  //         .split("\n")
+  //         .filter((item) => item.trim() !== "");
+
+  //       setSpareParts(parsedData);
+  //     };
+
+  //     reader.readAsBinaryString(file);
+  //   } else {
+  //     reader.onload = (event) => {
+  //       const contents = event.target.result;
+  //       const loadedSpareParts = contents.split("\n");
+
+  //       const filteredLoadedSpareParts = loadedSpareParts.filter(
+  //         (sparePart) => sparePart !== ""
+  //       );
+
+  //       setSpareParts(filteredLoadedSpareParts);
+
+  //       localStorage.setItem("percentage", 0);
+  //       setProgressCounter(localStorage.getItem("percentage"));
+  //     };
+
+  //     reader.readAsText(file);
+  //   }
+  // };
+
+  // const loadVehiclesFromFile = (e) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
+
+  //   reader.onload = (event) => {
+  //     const contents = event.target.result;
+  //     const loadedVehicles = contents.split("\n");
+
+  //     const filteredLoadedVehicles = loadedVehicles.filter(
+  //       (vehicle) => vehicle !== ""
+  //     );
+
+  //     setVehicles(filteredLoadedVehicles);
+  //     localStorage.setItem("percentage", 0);
+  //     setProgressCounter(localStorage.getItem("percentage"));
+  //   };
+
+  //   reader.readAsBinaryString(file);
+  // };
+
+  const handleLoadDataFromFile = (e, dataInfoType) => {
     const file = e.target.files[0];
     const reader = new FileReader();
 
-    reader.onload = (event) => {
-      const contents = event.target.result;
-      const loadedSpareParts = contents.split("\n");
+    if (file.type !== "text/plain") {
+      reader.onload = ({ target }) => {
+        const content = target.result;
+        const workbook = read(content, { type: "binary" });
 
-      const filteredLoadedSpareParts = loadedSpareParts.filter(
-        (sparePart) => sparePart !== ""
-      );
+        const sheetName = workbook.SheetNames[0];
+        const ws = workbook.Sheets[sheetName];
 
-      setSpareParts(filteredLoadedSpareParts);
+        const data = utils.sheet_to_csv(ws, { header: 1 });
 
-      localStorage.setItem("percentage", 0);
-      setProgressCounter(localStorage.getItem("percentage"));
-    };
+        const parsedData = data
+          .split("\n")
+          .filter((item) => item.trim() !== "");
 
-    reader.readAsText(file);
-  };
+        if (dataInfoType === "spareParts") {
+          setSpareParts(parsedData);
+        } else if (dataInfoType === "vehicles") {
+          setVehicles(parsedData);
+        } else {
+          throw new Error("Ocurrió un error!");
+        }
 
-  const loadVehiclesFromFile = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
+        localStorage.setItem("percentage", 0);
+        setProgressCounter(localStorage.getItem("percentage"));
+      };
 
-    reader.onload = (event) => {
-      const contents = event.target.result;
-      const loadedVehicles = contents.split("\n");
+      reader.readAsBinaryString(file);
+    } else {
+      reader.onload = ({ target }) => {
+        const content = target.result;
+        const data = content.split("\n");
 
-      const filteredLoadedVehicles = loadedVehicles.filter(
-        (vehicle) => vehicle !== ""
-      );
+        const parsedData = data.filter((item) => item.trim() !== "");
 
-      setVehicles(filteredLoadedVehicles);
-      localStorage.setItem("percentage", 0);
-      setProgressCounter(localStorage.getItem("percentage"));
-    };
+        if (dataInfoType === "spareParts") {
+          setSpareParts(parsedData);
+        } else if (dataInfoType === "vehicles") {
+          setVehicles(parsedData);
+        } else {
+          throw new Error("Ocurrió un error!");
+        }
 
-    reader.readAsBinaryString(file);
+        localStorage.setItem("percentage", 0);
+        setProgressCounter(localStorage.getItem("percentage"));
+      };
+
+      reader.readAsText(file);
+    }
   };
 
   const processAllData = () => {
@@ -198,10 +273,13 @@ const useHandleProcessData = () => {
     addVehicle,
     removeSparePartByIndex,
     removeVehicleByIndex,
-    loadSparePartsFromFile,
-    loadVehiclesFromFile,
+    // loadSparePartsFromFile,
+    // loadVehiclesFromFile,
     processAllData,
     showResultsButton,
+    handleLoadDataFromFile,
+    setSpareParts,
+    setVehicles,
   };
 };
 

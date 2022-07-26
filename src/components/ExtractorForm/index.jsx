@@ -21,17 +21,16 @@ const ExtractorForm = () => {
     addVehicle,
     removeSparePartByIndex,
     removeVehicleByIndex,
-    loadSparePartsFromFile,
-    loadVehiclesFromFile,
     processAllData,
     showResultsButton,
+    handleLoadDataFromFile,
   } = useHandleProcessData();
 
   return (
     <div>
       <InputDataEntry
         title="Autopartes"
-        handleChangeFunction={loadSparePartsFromFile}
+        handleChangeFunction={(e) => handleLoadDataFromFile(e, "spareParts")}
         load_type_id="load-autoparts-files"
         handleAddNewItem={addSparePart}
         listItems={spareParts}
@@ -43,7 +42,7 @@ const ExtractorForm = () => {
 
       <InputDataEntry
         title="Vehículos"
-        handleChangeFunction={loadVehiclesFromFile}
+        handleChangeFunction={(e) => handleLoadDataFromFile(e, "vehicles")}
         load_type_id="load-vehicles-files"
         handleAddNewItem={addVehicle}
         listItems={vehicles}
